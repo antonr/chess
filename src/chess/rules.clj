@@ -4,16 +4,25 @@
 (defn move-within-board? [move]
   (board/valid-coords? (:to move)))
 
+(defn all-possible-king-moves [[x y]]
+  (for [dx (range -1 2)
+        dy (range -1 2)
+        :when (not (and (= dx 0)
+                        (= dy 0)))]
+   { :from [x y] :to [(+ x dx) (+ y dy)] }))
+
+(defn all-possible-rook-moves [[x y]]
+  (flatten (for [d (range -7 8)
+                 :when (not (= d 0))]
+             [{ :from [x y] :to [(+ x d) y] }
+              { :from [x y] :to [x (+ y d)] }])))
+
+(defn piece-moves [[piece coords]]
+  (cond (board/king? piece) (all-possible-king-moves coords)
+        (board/rook? piece) (all-possible-rook-moves coords)))
+
 (defn all-possible-moves [board white]
-  (let [[x y] (board/king-coords board white)]
-    (filter move-within-board? [{ :from [x y] :to [(- x 1) (- y 1)] }
-                                { :from [x y] :to [x (- y 1)] }
-                                { :from [x y] :to [(+ x 1) (- y 1)] }
-                                { :from [x y] :to [(- x 1) y] }
-                                { :from [x y] :to [(+ x 1) y] }
-                                { :from [x y] :to [(- x 1) (+ y 1)] }
-                                { :from [x y] :to [x (+ y 1)] }
-                                { :from [x y] :to [(+ x 1) (+ y 1)] }])))
+  (filter move-within-board? (flatten (map piece-moves (board/pieces board white)))))
 
 (defn check? [board white]
   (let [king-coords (board/king-coords board white)]
