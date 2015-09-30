@@ -59,19 +59,37 @@
   (is (= (side? :. false) false)))
 
 (deftest rook-is-true-for-lower-r
-  (is (= (rook? :r) true)))
+  (is (rook? :r)))
 
 (deftest rook-is-true-for-upper-r
-  (is (= (rook? :R) true)))
+  (is (rook? :R)))
 
 (deftest rook-is-false-for-everything-else
-  (is (= (rook? :-) false)))
+  (is (not (rook? :-))))
 
 (deftest king-is-true-for-lower-k
-  (is (= (king? :k) true)))
+  (is (king? :k)))
 
 (deftest king-is-true-for-upper-k
-  (is (= (king? :K) true)))
+  (is (king? :K)))
 
 (deftest king-is-false-for-everything-else
-  (is (= (king? :-) false)))
+  (is (not (king? :-))))
+
+(deftest nothing-between-handles-straight-vertical-lines
+  (is (nothing-between? test-board [4 0] [4 2])))
+
+(deftest nothing-between-handles-reverse-vertical-lines
+  (is (not (nothing-between? test-board [4 6] [4 0]))))
+
+(deftest nothing-between-handles-straight-horizontal-lines
+  (is (not (nothing-between? test-board [0 2] [7 2]))))
+
+(deftest nothing-between-handles-reverse-horizontal-lines
+  (is (nothing-between? test-board [5 1] [0 1])))
+
+(deftest nothing-between-handles-straight-diagonal-lines
+  (is (nothing-between? test-board [0 0] [7 7])))
+
+(deftest nothing-between-handles-reverse-diagonal-lines
+  (is (not (nothing-between? test-board [0 6] [5 1]))))

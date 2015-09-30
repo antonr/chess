@@ -1,28 +1,29 @@
 (ns chess.rules
   (:require [chess.board :as board :refer :all]))
 
-(defn move-within-board? [move]
-  (board/valid-coords? (:to move)))
-
-(defn all-possible-king-moves [[x y]]
+(defn all-king-moves [[x y]]
   (for [dx (range -1 2)
         dy (range -1 2)
         :when (not (and (= dx 0)
                         (= dy 0)))]
    { :from [x y] :to [(+ x dx) (+ y dy)] }))
 
-(defn all-possible-rook-moves [[x y]]
+(defn all-rook-moves [[x y]]
   (flatten (for [d (range -7 8)
                  :when (not (= d 0))]
              [{ :from [x y] :to [(+ x d) y] }
               { :from [x y] :to [x (+ y d)] }])))
 
-(defn piece-moves [[piece coords]]
-  (cond (board/king? piece) (all-possible-king-moves coords)
-        (board/rook? piece) (all-possible-rook-moves coords)))
+(defn all-piece-moves [[piece coords]]
+  (cond (board/king? piece) (all-king-moves coords)
+        (board/rook? piece) (all-rook-moves coords)))
+
+(defn possible-move? [board move]
+  (and (board/valid-coords? (:to move))
+       (board/nothing-between? board (:from move) (:to move))))
 
 (defn all-possible-moves [board white]
-  (filter move-within-board? (flatten (map piece-moves (board/pieces board white)))))
+  (filter #(possible-move? board %) (flatten (map all-piece-moves (board/pieces board white)))))
 
 (defn check? [board white]
   (let [king-coords (board/king-coords board white)]

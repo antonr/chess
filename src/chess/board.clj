@@ -48,3 +48,23 @@
         result (-> (assoc board from empty-cell)
                    (assoc to piece))]
     result))
+
+(defn empty? [c]
+  (= c :.))
+
+(defn empty-coords? [board coords]
+  (let [index (coords2index coords)
+        piece (get board index)]
+    (empty? piece)))
+
+(defn line-between [[x1 y1] [x2 y2]]
+  (let [lx (- x2 x1)
+        ly (- y2 y1)
+        len (max lx ly (- lx) (- ly))
+        dx (/ lx len)
+        dy (/ ly len)
+        f (fn [t] [(+ x1 (* t dx)) (+ y1 (* t dy))])]
+    (map f (range 1 len))))
+
+(defn nothing-between? [board from to]
+  (every? #(empty-coords? board %) (line-between from to)))
