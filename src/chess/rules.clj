@@ -20,6 +20,7 @@
 
 (defn possible-move? [board move]
   (and (board/valid-coords? (:to move))
+       (not (board/same-color? board (:from move) (:to move)))
        (board/nothing-between? board (:from move) (:to move))))
 
 (defn all-possible-moves [board white]

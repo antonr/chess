@@ -93,3 +93,18 @@
 
 (deftest nothing-between-handles-reverse-diagonal-lines
   (is (not (nothing-between? test-board [0 6] [5 1]))))
+
+(deftest same-color-is-false-for-white-and-black
+  (is (not (same-color? test-board [4 0] [4 2]))))
+
+(deftest same-color-is-false-for-white-and-empty-cell
+  (is (not (same-color? test-board [4 2] [4 1]))))
+
+(deftest same-color-is-false-for-black-and-empty-cell
+  (is (not (same-color? test-board [4 0] [4 1]))))
+
+(deftest same-color-is-true-for-white-and-white
+  (is (same-color? test-board [4 2] [0 6])))
+
+(deftest same-color-is-true-for-black-and-black
+  (is (same-color? test-board [4 0] [5 0])))

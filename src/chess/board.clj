@@ -57,6 +57,14 @@
         piece (get board index)]
     (empty? piece)))
 
+(defn same-color? [board coords1 coords2]
+  (let [index1 (coords2index coords1)
+        index2 (coords2index coords2)
+        piece1 (get board index1)
+        piece2 (get board index2)]
+    (or (and (white? piece1) (white? piece2))
+        (and (black? piece1) (black? piece2)))))
+
 (defn line-between [[x1 y1] [x2 y2]]
   (let [lx (- x2 x1)
         ly (- y2 y1)
