@@ -28,8 +28,9 @@
           (flatten (map all-piece-moves (board/pieces board white)))))
 
 (defn check? [board white]
-  (let [king-coords (board/king-coords board white)]
-    (some #(= king-coords (:to %)) (all-possible-moves board (not white)))))
+  (let [king-coords (board/king-coords board white)
+        moves (all-possible-moves board (not white))]
+    (some #(= king-coords (:to %)) moves)))
 
 (defn valid-move? [board white move]
   (not (check? (board/apply-move board move) white)))
