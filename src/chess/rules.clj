@@ -24,7 +24,8 @@
        (board/nothing-between? board (:from move) (:to move))))
 
 (defn all-possible-moves [board white]
-  (filter #(possible-move? board %) (flatten (map all-piece-moves (board/pieces board white)))))
+  (filter #(possible-move? board %)
+          (flatten (map all-piece-moves (board/pieces board white)))))
 
 (defn check? [board white]
   (let [king-coords (board/king-coords board white)]
@@ -38,3 +39,11 @@
 
 (defn moves [board white]
   (validate board white (all-possible-moves board white)))
+
+(defn checkmate? [board white]
+  (and (check? board white)
+       (empty? (moves board white))))
+
+(defn stalemate? [board white]
+  (and (not (check? board white))
+       (empty? (moves board white))))

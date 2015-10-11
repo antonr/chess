@@ -49,13 +49,13 @@
                    (assoc to piece))]
     result))
 
-(defn empty? [c]
+(defn empty-cell? [c]
   (= c :.))
 
 (defn empty-coords? [board coords]
   (let [index (coords2index coords)
         piece (get board index)]
-    (empty? piece)))
+    (empty-cell? piece)))
 
 (defn same-color? [board coords1 coords2]
   (let [index1 (coords2index coords1)
