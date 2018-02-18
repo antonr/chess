@@ -1,7 +1,6 @@
 (ns chess.board)
 
-(def empty-cell
-  :.)
+(def empty-cell :.)
 
 (defn to-char [c]
   (get (name c) 0))
@@ -50,7 +49,7 @@
     result))
 
 (defn empty-cell? [c]
-  (= c :.))
+  (= c empty-cell))
 
 (defn empty-coords? [board coords]
   (let [index (coords2index coords)

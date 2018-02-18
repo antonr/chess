@@ -1,6 +1,6 @@
 (ns chess.analyze
-  (:require [chess.board :as board :refer :all]
-            [chess.rules :as rules :refer :all]))
+  (:require [chess.board :as board]
+            [chess.rules :as rules]))
 
 (defn analyze-moves [board winning-side current-side depth]
   (let [opponent (not current-side)
