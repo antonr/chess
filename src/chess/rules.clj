@@ -45,11 +45,9 @@
 (defn valid-move? [board white move]
   (not (check? (board/apply-move board move) white)))
 
-(defn validate [board white moves]
-  (filter #(valid-move? board white %) moves))
-
 (defn moves [board white]
-  (validate board white (all-possible-moves board white)))
+  (filter #(valid-move? board white %)
+          (all-possible-moves board white)))
 
 (defn checkmate? [board white]
   (and (check? board white)
