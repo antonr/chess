@@ -4,21 +4,7 @@
 
 (deftest solves-one-step-puzzles
   (let [test-board
-        [:. :. :. :. :k :. :. :.
-         :. :. :. :. :. :. :. :.
-         :. :. :. :. :K :. :. :.
-         :. :. :. :. :. :. :. :.
-         :. :. :. :. :. :. :. :.
-         :. :. :. :. :. :. :. :.
-         :. :. :R :. :. :. :. :.
-         :. :. :. :. :. :. :. :.]]
-    (is (= (analyze test-board true true 0)
-           [{:move {:from [2 6] :to [2 0]}
-             :responses []}]))))
-
-(deftest solves-one-step-puzzles-with-queen
-  (let [test-board
-        [:. :k :. :. :. :. :. :.
+        [:. :k :. :. :. :r :. :.
          :. :. :. :. :. :. :. :.
          :. :K :. :. :. :. :. :.
          :. :. :. :Q :. :. :. :.
@@ -27,9 +13,7 @@
          :. :. :. :. :. :. :. :.
          :. :. :. :. :. :. :. :.]]
     (is (= (analyze test-board true true 0)
-           [{:move {:from [3 3] :to [3 0]} :responses []}
-            {:move {:from [3 3] :to [1 1]} :responses []}
-            {:move {:from [3 3] :to [6 0]} :responses []}]))))
+           [{:move {:from [3 3] :to [1 1]} :responses []}]))))
 
 (deftest solves-two-step-puzzles
     (let [test-board
