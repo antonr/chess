@@ -1,4 +1,8 @@
-(ns chess.format)
+(ns chess.format
+  (:require [chess.board :as board]
+            [clojure.string :as str]))
+
+(def letters "abcdefgh")
 
 (defn split-rows [cells]
   (partition 8 cells))
@@ -21,15 +25,51 @@
     (cons border (interpose border rows))))
 
 (defn add-column-letters [rows]
-  (concat rows [(cons "     " (interpose "   " "abcdefgh"))]))
+  (concat rows [(cons "     " (interpose "   " letters))]))
 
 (defn add-newlines [rows]
   (mapcat #(concat % '("\n")) rows))
 
 (defn board [cells]
-  (apply str (->> (split-rows cells)
-                  (add-line-numbers)
-                  (add-column-borders)
-                  (add-column-letters)
-                  (add-line-borders)
-                  (add-newlines))))
+  (->>
+    (split-rows cells)
+    (add-line-numbers)
+    (add-column-borders)
+    (add-column-letters)
+    (add-line-borders)
+    (concat)
+    (map #(apply str %))))
+
+(defn piece [p]
+  (cond (board/king? p) "K"
+        (board/queen? p) "Q"
+        (board/rook? p) "R"
+        :else ""))
+
+(defn move [board move]
+  (let [from (:from move)
+        from-index (board/coords2index from)
+        p (get board from-index)
+        [x y] (:to move)
+        col (get letters x)
+        row (- 8 y)]
+    (str (piece p) col row)))
+
+(defn move-with-responses [moves board item]
+  (let [move-str (move board (:move item))
+        new-moves (conj moves move-str)
+        responses (:responses item)]
+    (if (empty? responses)
+      (str/join " "
+        (map (fn [n [w b]]
+               (str
+                 (inc n) ". " w
+                 (if (empty? b)
+                   "#" ; FIXME: checkmate should be a part of move
+                   (str " " b))))
+          (range)
+          (partition 2 2 nil new-moves)))
+      (map #(move-with-responses new-moves board %) (:responses item)))))
+
+(defn moves [board moves]
+  (flatten (map #(move-with-responses [] board %) moves)))
