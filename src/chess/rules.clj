@@ -16,7 +16,8 @@
 
 (defn all-piece-moves [[piece coords]]
   (cond (board/king? piece) (all-king-moves coords)
-        (board/rook? piece) (all-rook-moves coords)))
+        (board/rook? piece) (all-rook-moves coords)
+        :else []))
 
 (defn possible-move? [board move]
   (and (board/valid-coords? (:to move))
