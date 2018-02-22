@@ -17,6 +17,9 @@
 (defn rook? [c]
   (= (Character/toLowerCase (to-char c)) \r))
 
+(defn queen? [c]
+  (= (Character/toLowerCase (to-char c)) \q))
+
 (defn king? [c]
   (= (Character/toLowerCase (to-char c)) \k))
 

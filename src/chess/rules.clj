@@ -14,9 +14,18 @@
              [{ :from [x y] :to [(+ x d) y] }
               { :from [x y] :to [x (+ y d)] }])))
 
+(defn all-queen-moves [[x y]]
+  (flatten (for [d (range -7 8)
+                 :when (not (= d 0))]
+             [{ :from [x y] :to [(+ x d) y] }
+              { :from [x y] :to [x (+ y d)] }
+              { :from [x y] :to [(+ x d) (- y d)] }
+              { :from [x y] :to [(+ x d) (+ y d)] }])))
+
 (defn all-piece-moves [[piece coords]]
   (cond (board/king? piece) (all-king-moves coords)
         (board/rook? piece) (all-rook-moves coords)
+        (board/queen? piece) (all-queen-moves coords)
         :else []))
 
 (defn possible-move? [board move]

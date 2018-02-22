@@ -67,6 +67,12 @@
 (deftest rook-is-false-for-everything-else
   (is (not (rook? :-))))
 
+(deftest queen-is-true-for-lower-q
+  (is (queen? :q)))
+
+(deftest queen-is-true-for-upper-Q
+  (is (queen? :Q)))
+
 (deftest king-is-true-for-lower-k
   (is (king? :k)))
 
